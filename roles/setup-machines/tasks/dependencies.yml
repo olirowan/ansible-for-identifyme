@@ -1,0 +1,11 @@
+---
+
+- name: Install dependencies
+  package:
+    name: "{{ item }}"
+    state: latest
+  become: true
+  with_items:
+    - git
+    - python
+    - epel-release

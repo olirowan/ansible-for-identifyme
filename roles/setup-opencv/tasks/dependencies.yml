@@ -1,0 +1,39 @@
+---
+
+- name: Install dependancies
+  yum:
+    name: "{{ item }}"
+    state: latest
+  become: true
+  with_items:
+    - httpd
+    - git
+    - python
+
+
+- name: Create olirowanxyz group
+  group:
+    name: "{{ olirowanxyz_user }}"
+    state: present
+  become: true
+
+
+- name: Add olirowayxyz user
+  user:
+    name: "{{ olirowanxyz_user }}"
+    group: "{{ olirowanxyz_user }}"
+  become: true
+
+
+- name: Add apache user
+  user:
+    name: "{{ webserver_user }}"
+    group: "{{ olirowanxyz_user }}"
+  become: true
+
+
+- name: Add my user to new group
+  user:
+    name: oli
+    group: "{{ olirowanxyz_user }}"
+  become: true

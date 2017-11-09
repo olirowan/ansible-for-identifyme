@@ -1,0 +1,37 @@
+---
+
+ansible_ssh_user: "rowano"
+
+export_folder: "/export"
+
+olirowanxyz_root_folder: "{{ export_folder }}/olirowanxyz"
+
+olirowanxyz_temp_folder: "{{ olirowanxyz_root_folder }}/temp"
+
+olirowanxyz_user: "olirowanxyz"
+
+olirowanxyz_folder: "/var/www/html/"
+
+webserver_user: "apache"
+
+
+#MongoDB variables
+db_admin:
+db_pass:
+
+mongodb_version: "3.4"
+
+mongodb_log_path: /var/log/mongodb/
+mongodb_db_path:  /data/db
+
+mongodb_bind_ip: 127.0.0.1
+
+mongodb_authorization: disabled
+
+#Williams variables
+mongodb_components: [ "mongod" ]
+mongodb_configsvr:      false         # install mongod as a config server?
+mongodb_configsvr_port: 27019         # TCP port of config server
+gosu_version:  1.7
+
+mongodb_use_service: True             # use "service" command to start/restart mongodb?

@@ -1,0 +1,29 @@
+---
+
+- name: Master file to setup common services for all machines
+  hosts: database
+
+  roles:
+
+    - setup-machines
+
+
+#- name: Install OpenCV on RPI(s)
+
+#  hosts: opencv
+
+#  roles:
+
+#    - setup-opencv
+
+
+- name: Install MongoDB on database machine
+  hosts: database
+  become: True
+
+  roles:
+    - setup-database
+
+  handlers:
+    - include: 'handlers/main.yml'
+

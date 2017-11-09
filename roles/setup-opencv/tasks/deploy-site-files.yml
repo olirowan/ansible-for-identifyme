@@ -1,0 +1,66 @@
+---
+
+- name: Clear temp directory
+  file:
+    path: "{{ olirowanxyz_temp_folder }}"
+    state: "absent"
+  become: true
+
+- name: Create temp directory
+  file:
+    path: "{{ olirowanxyz_temp_folder }}"
+    state: "directory"
+    mode: "0775"
+    owner: "{{ olirowanxyz_user }}"
+    group: "{{ olirowanxyz_user }}"
+  become: true
+
+- name: Place site files in temp directory
+  git:
+    repo: 'git@github.com:olirowan/olirowanxyz.git'
+    dest: "{{ olirowanxyz_temp_folder }}/"
+    accept_hostkey: yes
+
+- name: Copy the site files to apache folder
+  synchronize:
+    src: "{{ olirowanxyz_temp_folder }}/"
+    dest: "{{ olirowanxyz_folder }}"
+    recursive: yes
+    delete: yes
+    group: yes
+    owner: yes
+  delegate_to: "{{ inventory_hostname }}"
+  become: true
+
+- name: Remove unnecessary files/folders.
+  file:
+    state: "absent"
+    path: "{{ olirowanxyz_folder }}{{ item }}"
+  become: true
+  with_items:
+    - ".idea"
+    - ".git"
+
+- name: Open ports for firewall
+  firewalld:
+    service: https
+    permanent: true
+    state: enabled
+  become: true
+
+- name: Give permissions to webserver user
+  file:
+    state: "directory"
+    path: "{{ olirowanxyz_folder }}"
+    owner: "{{ webserver_user }}"
+    group: "{{ olirowanxyz_user }}"
+    mode: "0775"
+    recurse: yes
+  become: true
+
+- service:
+    name: httpd
+    state: reloaded
+  become: true
+
+# Certbot for apache now applies the certificate automatically and edits the apache redirects to only offer HTTPS.

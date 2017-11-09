@@ -1,0 +1,62 @@
+---
+# file: tasks/use-yum.yml
+#
+# Configure mongodb from YUM repository.
+#
+# @see http://docs.mongodb.org/manual/tutorial/install-mongodb-on-red-hat/
+#
+
+#- name: install libselinux-python binary for Ansible to work
+#  yum: name=libselinux-python state=present
+
+
+
+- name: add MongoDB official repository for CentOS
+  template: src=mongodb-org-3.4.repo.j2 dest=/etc/yum.repos.d/mongodb-org-3.4.repo mode=0644
+
+- block:
+  - name: install MongoDB with specific version
+    yum: name="mongodb-org-{{ mongodb_version }}*"  update_cache=yes  state=present
+
+    yum: name="mongodb-org-shell-{{ mongodb_version }}*"  state=present
+    yum: name="mongodb-org-tools-{{ mongodb_version }}*"  state=present
+
+  when: mongodb_version is defined
+
+- name: install MongoDB with default version
+  yum: name=mongodb-org  state=present
+  when: mongodb_version is not defined
+
+
+- name: install gosu
+  include: install-gosu.yml
+
+
+#
+# INIT system for mongod
+#
+
+- name: set mongod INIT status and start
+  service: name=mongod state=started enabled=yes
+  when: 'mongodb_use_service|bool  and  ("mongod" in mongodb_components)'
+
+- name: set mongod INIT status (SysV style)
+  command: /sbin/chkconfig mongod on
+  when: 'not mongodb_use_service|bool  and  ("mongod" in mongodb_components)'
+
+
+#
+# INIT system for mongos
+#
+
+- name: copy mongos INIT script to server
+  template: src="../templates/mongos.sysvinit.gosu.redhat.sh.j2"  dest="/etc/init.d/mongos" mode="a+x"
+  when: '"mongos" in mongodb_components'
+
+- name: set mongos INIT status
+  service: name=mongos enabled=yes
+  when: 'mongodb_use_service|bool  and  ("mongos" in mongodb_components)'
+
+- name: set mongos INIT status (SysV style)
+  command: /sbin/chkconfig mongos on
+  when: 'not mongodb_use_service|bool  and  ("mongos" in mongodb_components)'

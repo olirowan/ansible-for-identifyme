@@ -1,0 +1,7 @@
+---
+
+- name: Install dependancies
+  include: dependencies.yml
+
+- name: Deploy site files from git
+  include: deploy-site-files.yml
