@@ -1,18 +1,11 @@
 ---
-# file: tasks/main.yml
-# Top-level installer for MongoDB.
-#
-# @see http://docs.mongodb.org/manual/administration/install-on-linux/
-#
+
 
 
 - name: install libselinux-python binary for Ansible to work
   yum: name=libselinux-python state=present
   when: ansible_pkg_mgr == "yum"
 
-#- name: delegate to SELINUX handling subtask, if necessary
-#  include: set-selinux.yml
-#  when: mongodb_in_selinux is defined and mongodb_in_selinux == true
 
 
 

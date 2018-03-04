@@ -1,6 +1,6 @@
 ---
 
-ansible_ssh_user: "rowano"
+ansible_ssh_user: "oli"
 
 export_folder: "/export"
 

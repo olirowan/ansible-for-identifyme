@@ -1,7 +1,8 @@
 ---
 
 - name: Master file to setup common services for all machines
-  hosts: database
+  hosts: server
+  become: True
 
   roles:
 
@@ -18,7 +19,7 @@
 
 
 - name: Install MongoDB on database machine
-  hosts: database
+  hosts: server
   become: True
 
   roles:
