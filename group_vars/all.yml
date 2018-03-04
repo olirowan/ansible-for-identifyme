@@ -4,15 +4,11 @@ ansible_ssh_user: "oli"
 
 export_folder: "/export"
 
-olirowanxyz_root_folder: "{{ export_folder }}/olirowanxyz"
+identifyme_root_folder: "{{ export_folder }}/identifyme"
 
-olirowanxyz_temp_folder: "{{ olirowanxyz_root_folder }}/temp"
+identifyme_temp_folder: "{{ identifyme_root_folder }}/temp"
 
-olirowanxyz_user: "olirowanxyz"
-
-olirowanxyz_folder: "/var/www/html/"
-
-webserver_user: "apache"
+identifyme_user: "identifyme"
 
 
 #MongoDB variables

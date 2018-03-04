@@ -8,3 +8,8 @@
   with_items:
     - git
     - python
+    - python-pip
+
+- name: Install pymongo via pip
+  pip:
+    name: pymongo

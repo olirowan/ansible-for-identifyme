@@ -1,5 +1,6 @@
 ---
 
+
 - name: Install dependancies
   yum:
     name: "{{ item }}"
@@ -11,29 +12,15 @@
     - python
 
 
-- name: Create olirowanxyz group
+- name: Create identifyme group
   group:
-    name: "{{ olirowanxyz_user }}"
+    name: "{{ identifyme_user }}"
     state: present
   become: true
 
 
-- name: Add olirowayxyz user
+- name: Add identifyme user
   user:
-    name: "{{ olirowanxyz_user }}"
-    group: "{{ olirowanxyz_user }}"
-  become: true
-
-
-- name: Add apache user
-  user:
-    name: "{{ webserver_user }}"
-    group: "{{ olirowanxyz_user }}"
-  become: true
-
-
-- name: Add my user to new group
-  user:
-    name: oli
-    group: "{{ olirowanxyz_user }}"
+    name: "{{ identifyme_user }}"
+    group: "{{ identifyme_user }}"
   become: true
