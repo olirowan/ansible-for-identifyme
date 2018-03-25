@@ -12,4 +12,8 @@
 
 - name: Install pymongo via pip
   pip:
-    name: pymongo
+    name: "{{ item }}"
+  with_items:
+    - pymongo
+    - flask
+    - flask_pymongo
